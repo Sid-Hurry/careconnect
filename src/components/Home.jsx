@@ -1,120 +1,89 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaHospitalSymbol, FaUserShield, FaChartLine, FaBoxes } from 'react-icons/fa';
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-blue-50">
-      {/* Navbar */}
-      <nav className="bg-white ">
-        <div className="max-w-7xl mx-auto px-4 sm:px-4 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo on the left */}
-            <div className="flex items-center">
-              <img src="/careconnect_logo.png" alt="CareConnect Logo" className="h-6 w-40" />
-            </div>
-
-            {/* Sign In Buttons on the right */}
-            <div className="flex space-x-4">
-            <Link to = '/About'><button type="button" class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">About Us</button></Link>
-            </div>
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-between font-sans">
+      
+      {/* Header */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center space-x-2 text-slate-800 font-bold text-lg">
+            <FaHospitalSymbol className="text-xl text-blue-500" />
+            <span className="tracking-tight">CareConnect</span>
           </div>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <header className="bg-blue-100 py-12">
-        <div className="max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-blue-600">Join the CareConnect Platform</h1>
-          <p className="mt-4 text-lg text-gray-600">
-            Sign up to connect, manage, and streamline your healthcare services efficiently.
-          </p>
+          <Link to="/login">
+            <button className="px-5 py-2 border border-slate-350 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold transition-all">
+              Staff Portal Login
+            </button>
+          </Link>
         </div>
       </header>
 
-      {/* Signin Options */}
-      <section className="mt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-          {/* Doctor Signin */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold text-blue-600 mb-4">Doctor Signup</h2>
-            <p className="text-gray-600 mb-6">Join as a doctor and manage your patients seamlessly.</p>
-            <Link to = '/Doctor-Login'>
-            <button className="w-full bg-blue-600 text-white py-2 rounded-full font-semibold hover:bg-blue-500">
-            Login as Doctor
-            </button>
-            </Link>
-          </div>
+      {/* Hero Section */}
+      <main className="flex-1 flex flex-col justify-center items-center px-6 py-20 text-center max-w-4xl mx-auto">
+        <span className="bg-slate-100 text-slate-800 text-xxs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wider mb-6 border border-slate-200">
+          Hospital Resource Optimization Platform
+        </span>
+        <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+          Synchronize Hospital Operations, <br className="hidden md:block" />
+          Minimize Patient Wait Times.
+        </h1>
+        <p className="mt-6 text-sm text-slate-500 max-w-xl leading-relaxed">
+          CareConnect optimizes patient flow queues, monitors real-time ICU/ER bed utilization, manages admissions lifecycles, alerts critical stock outages, and streamlines internal medical operations.
+        </p>
 
-          {/* Management Signin */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold text-blue-600 mb-4">Management Signin</h2>
-            <p className="text-gray-600 mb-6">Oversee and streamline your healthcare operations.</p>
-            <Link to = "/Mangement-Login">
-            <button className="w-full bg-purple-600 text-white py-2 rounded-full font-semibold hover:bg-purple-500">
-              Login as Management
+        <div className="mt-10">
+          <Link to="/login">
+            <button className="px-8 py-3 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-all cursor-pointer">
+              Access CareConnect Console
             </button>
-            </Link>
-          </div>
-
-          {/* Staff Signin */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold text-blue-600 mb-4">Staff Signin</h2>
-            <p className="text-gray-600 mb-6">Get access to tools to manage daily operations effectively.</p>
-            <Link to = '/Staff-Login'>
-            <button className="w-full bg-red-600 text-white py-2 rounded-full font-semibold hover:bg-red-500">
-            Login as Staff
-            </button>
-            </Link>
-          </div>
+          </Link>
         </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="bg-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-blue-600 mb-8">Platform Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Feature 1 */}
-            <div className="bg-blue-50 p-6 rounded-lg shadow-md text-center">
-              <img
-                src="/heart-rate.png"
-                alt="Feature 1"
-                className="mx-auto mb-4 h-16"
-              />
-              <h3 className="text-xl font-bold text-blue-600 mb-2">Patient Mangement</h3>
-              <p className="text-gray-600">Easily manage patient records and appointments with our intuitive dashboard.</p>
+        {/* Feature Highlights Grid */}
+        <section className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 text-left">
+            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700 mb-4 border border-slate-200">
+              <FaChartLine className="text-sm" />
             </div>
-
-            {/* Feature 2 */}
-            <div className="bg-blue-50 p-6 rounded-lg shadow-md text-center">
-              <img
-                src="/hospital.png"
-                alt="Feature 2"
-                className="mx-auto mb-4 h-16"
-              />
-              <h3 className="text-xl font-bold text-blue-600 mb-2">Operational Efficiency</h3>
-              <p className="text-gray-600">Streamline operations, track performance, and make data-driven decisions.</p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="bg-blue-50 p-6 rounded-lg shadow-md text-center">
-              <img
-                src="/teamwork.png"
-                alt="Feature 3"
-                className="mx-auto mb-4 h-16"
-              />
-              <h3 className="text-xl font-bold text-blue-600 mb-2">Staff Coordination</h3>
-              <p className="text-gray-600">Improve communication and workflow for staff.</p>
-            </div>
+            <h3 className="text-sm font-bold text-slate-900 mb-2">Smart OPD Queuing</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Calculates wait time estimations, consultation progression, and peak queue congestions.
+            </p>
           </div>
-        </div>
-      </section>
+
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 text-left">
+            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700 mb-4 border border-slate-200">
+              <FaUserShield className="text-sm" />
+            </div>
+            <h3 className="text-sm font-bold text-slate-900 mb-2">RBAC Wards Control</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Tailored workspaces for Management, Doctors, Nurses, and Reception Staff.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 text-left">
+            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700 mb-4 border border-slate-200">
+              <FaBoxes className="text-sm" />
+            </div>
+            <h3 className="text-sm font-bold text-slate-900 mb-2">Inventory Management</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Track pharmacy and supply levels, generating alerts when stock falls below critical thresholds.
+            </p>
+          </div>
+        </section>
+      </main>
 
       {/* Footer */}
-      <footer className="mt-16 bg-blue-100 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-gray-600">&copy; 2024 CareConnect. All rights reserved.</p>
+      <footer className="bg-white border-t border-slate-200 py-8">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-slate-400 text-xxs font-medium uppercase tracking-wider">
+          <p>&copy; {new Date().getFullYear()} CareConnect. Dedicated Hospital Resource Optimization System.</p>
+          <div className="flex space-x-6 mt-4 md:mt-0">
+            <span className="hover:text-slate-600 cursor-pointer">Security Protocol</span>
+            <span className="hover:text-slate-600 cursor-pointer">Support</span>
+          </div>
         </div>
       </footer>
     </div>
