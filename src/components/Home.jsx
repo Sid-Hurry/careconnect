@@ -10,7 +10,7 @@ import ssOPDQueue from '../assets/ss2/Screenshot 2026-06-13 181444.png';
 import ssBeds from '../assets/ss2/Screenshot 2026-06-13 181533.png';
 import ssAdmissions from '../assets/ss2/Screenshot 2026-06-13 181620.png';
 import ssInventory from '../assets/ss2/Screenshot 2026-06-13 181705.png';
-// import ssAlerts from '../assets/ss2/Screenshot 2026-06-13 181755.png';
+import ssAlerts from '../assets/ss2/Screenshot 2026-06-13 181755.png';
 import ssNotices from '../assets/ss2/Screenshot 2026-06-13 181926.png';
 
 
