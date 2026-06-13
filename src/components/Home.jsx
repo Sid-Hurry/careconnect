@@ -10,7 +10,7 @@ import ssOPDQueue from '../assets/ss2/Screenshot 2026-06-13 181444.png';
 import ssBeds from '../assets/ss2/Screenshot 2026-06-13 181533.png';
 import ssAdmissions from '../assets/ss2/Screenshot 2026-06-13 181620.png';
 import ssInventory from '../assets/ss2/Screenshot 2026-06-13 181705.png';
-import ssAlerts from '../assets/ss2/Screenshot 2026-06-13 181755.png';
+// import ssAlerts from '../assets/ss2/Screenshot 2026-06-13 181755.png';
 import ssNotices from '../assets/ss2/Screenshot 2026-06-13 181926.png';
 
 
@@ -45,9 +45,9 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col justify-between font-sans relative">
-      
+
       {/* Hero Section Container (Covers Header + Hero content) */}
-      <div 
+      <div
         className="relative min-h-screen flex flex-col justify-between bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${healthTechImg})` }}
       >
@@ -91,7 +91,7 @@ const Home = () => {
             Transforming Hospital Operations <br className="hidden md:block" />
             Through Intelligent Resource Management
           </h1>
-          
+
           {/* Subtext */}
           <p className="mt-8 text-sm sm:text-base text-slate-200 max-w-2xl leading-relaxed font-semibold drop-shadow-sm">
             CareConnect stabilizes patient throughput, coordinates real-time ER/ICU bed utilization, handles full admissions lifecycles, and triggers urgent inventory outage alerts across the clinical network.
@@ -111,7 +111,7 @@ const Home = () => {
             </a>
           </div>
         </main>
-        
+
         {/* Spacer at the bottom to balance layout */}
         <div className="h-8 relative z-20" />
       </div>
@@ -129,16 +129,16 @@ const Home = () => {
 
         <div className="relative">
           {/* Curved healthtech green line connecting the steps (ECG/Heartbeat style) */}
-          <svg 
-            className="hidden lg:block absolute top-[48px] left-[7.14%] right-[7.14%] h-[60px] -translate-y-1/2 -z-10 overflow-visible" 
-            fill="none" 
+          <svg
+            className="hidden lg:block absolute top-[48px] left-[7.14%] right-[7.14%] h-[60px] -translate-y-1/2 -z-10 overflow-visible"
+            fill="none"
             viewBox="0 0 600 100"
             preserveAspectRatio="none"
           >
-            <path 
-              d="M 0 50 Q 50 10 100 50 T 200 50 T 300 50 T 400 50 T 500 50 T 600 50" 
-              stroke="#10b981" 
-              strokeWidth="4" 
+            <path
+              d="M 0 50 Q 50 10 100 50 T 200 50 T 300 50 T 400 50 T 500 50 T 600 50"
+              stroke="#10b981"
+              strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
@@ -146,7 +146,7 @@ const Home = () => {
 
           {/* Steps Grid: 7 steps */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-8 lg:gap-6">
-            
+
             {/* Step 1 */}
             <div className="relative text-center flex flex-col items-center justify-start group py-6 px-2">
               <div className="w-12 h-12 rounded-full bg-white border-2 border-slate-200 flex items-center justify-center text-xs font-black text-slate-500 shadow-sm mb-4 z-10 relative group-hover:border-emerald-500 group-hover:text-emerald-600 group-hover:bg-emerald-50/50 transition-all duration-300">
@@ -279,9 +279,9 @@ const Home = () => {
           <div className="relative">
             <div className="absolute inset-0 bg-indigo-500/5 blur-[50px] rounded-3xl pointer-events-none" />
             <div className="relative bg-white border border-slate-200/80 p-2 rounded-2xl shadow-xs">
-              <img 
-                src={image2Img} 
-                alt="CareConnect Advanced Clinical Synchronization Hub" 
+              <img
+                src={image2Img}
+                alt="CareConnect Advanced Clinical Synchronization Hub"
                 className="w-full h-auto object-cover rounded-xl shadow-xxs border border-slate-100"
               />
             </div>
@@ -378,9 +378,9 @@ const Home = () => {
           <div className="relative max-w-5xl mx-auto w-full group">
             {/* Carousel Main Container with standard borders/shadow and overflow protection */}
             <div className="relative overflow-hidden rounded-2xl shadow-sm border border-slate-200 bg-slate-50 aspect-[16/10]">
-              
+
               {/* Slider Track (Horizontal sliding transition) */}
-              <div 
+              <div
                 className="flex h-full transition-transform duration-500 ease-out"
                 style={{ transform: `translate3d(-${activeIndex * 100}%, 0, 0)` }}
               >
@@ -394,7 +394,7 @@ const Home = () => {
                   </div>
                 ))}
               </div>
-              
+
               {/* Left Arrow Option */}
               <button
                 onClick={handlePrev}
@@ -424,9 +424,8 @@ const Home = () => {
                 <button
                   key={idx}
                   onClick={() => setActiveIndex(idx)}
-                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                    activeIndex === idx ? 'w-5 bg-emerald-500' : 'w-1.5 bg-slate-300 hover:bg-slate-450'
-                  }`}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${activeIndex === idx ? 'w-5 bg-emerald-500' : 'w-1.5 bg-slate-300 hover:bg-slate-450'
+                    }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
               ))}
