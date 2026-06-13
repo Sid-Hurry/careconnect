@@ -491,7 +491,7 @@ const Overview = () => {
             </h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Link to="/patients" className="p-5 border border-slate-200/60 rounded-xl hover:bg-slate-50/50 hover:shadow-xs transition-all flex flex-col justify-between group">
+              <Link to="/patients" state={{ openRegForm: true }} className="p-5 border border-slate-200/60 rounded-xl hover:bg-slate-50/50 hover:shadow-xs transition-all flex flex-col justify-between group">
                 <div>
                   <h4 className="text-xs font-bold text-slate-800 group-hover:text-slate-950 transition-colors">Patient Registration Intake</h4>
                   <p className="text-xxs text-slate-500 mt-1.5 leading-relaxed font-medium">Register new patient records, phone numbers, addresses, and initial medical history files.</p>

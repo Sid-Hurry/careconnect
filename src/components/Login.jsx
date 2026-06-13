@@ -175,7 +175,7 @@ const Login = () => {
                       : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/50'
                   }`}
                 >
-                  {portal.id === 'Reception Staff' ? 'Reception' : portal.id}
+                  {portal.id === 'Reception Staff' ? 'reception/opd' : portal.id}
                 </button>
               ))}
             </div>

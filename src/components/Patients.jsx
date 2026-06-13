@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useGlobalContext } from '../context/Context';
+import { MdPersonAdd, MdClose } from 'react-icons/md';
 
 const Patients = () => {
   const { user, patients, addPatient, updateVitals } = useGlobalContext();
   const [searchTerm, setSearchTerm] = useState('');
+  const location = useLocation();
   
   // Registration Form State
-  const [showRegForm, setShowRegForm] = useState(false);
+  const [showRegForm, setShowRegForm] = useState(location.state?.openRegForm || false);
   const [newPatient, setNewPatient] = useState({
     name: '',
     age: '',
@@ -88,13 +91,13 @@ const Patients = () => {
           />
         </div>
 
-        {/* Action button: Reception can register */}
         {(user?.role === 'Reception Staff' || user?.role === 'Management') && (
           <button
             onClick={() => setShowRegForm(!showRegForm)}
-            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-4.5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm hover:shadow-md"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm hover:shadow-md"
           >
-            <span>Intake Patient Registration</span>
+            {showRegForm ? <MdClose className="text-sm" /> : <MdPersonAdd className="text-sm" />}
+            <span>{showRegForm ? 'Close Intake Form' : 'Intake Patient Registration'}</span>
           </button>
         )}
       </div>
@@ -112,7 +115,7 @@ const Patients = () => {
               <input
                 type="text"
                 required
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
+                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                 placeholder="James Watson"
                 value={newPatient.name}
                 onChange={(e) => setNewPatient({ ...newPatient, name: e.target.value })}
@@ -124,7 +127,7 @@ const Patients = () => {
               <input
                 type="number"
                 required
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
+                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                 placeholder="45"
                 value={newPatient.age}
                 onChange={(e) => setNewPatient({ ...newPatient, age: e.target.value })}
@@ -134,7 +137,7 @@ const Patients = () => {
             <div>
               <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Gender</label>
               <select
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
+                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                 value={newPatient.gender}
                 onChange={(e) => setNewPatient({ ...newPatient, gender: e.target.value })}
               >
@@ -149,7 +152,7 @@ const Patients = () => {
               <input
                 type="text"
                 required
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
+                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                 placeholder="9876543210"
                 value={newPatient.phone}
                 onChange={(e) => setNewPatient({ ...newPatient, phone: e.target.value })}
@@ -160,7 +163,7 @@ const Patients = () => {
               <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Current Residence Address</label>
               <input
                 type="text"
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
+                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                 placeholder="12 Baker St, New Delhi"
                 value={newPatient.address}
                 onChange={(e) => setNewPatient({ ...newPatient, address: e.target.value })}
@@ -171,7 +174,7 @@ const Patients = () => {
               <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Medical History & Pre-existing Conditions (Comma separated)</label>
               <textarea
                 rows="2"
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
+                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                 placeholder="Hypertension, Asthma, Diabetes"
                 value={newPatient.medicalHistory}
                 onChange={(e) => setNewPatient({ ...newPatient, medicalHistory: e.target.value })}
@@ -182,13 +185,13 @@ const Patients = () => {
               <button
                 type="button"
                 onClick={() => setShowRegForm(false)}
-                className="px-4.5 py-2 border border-slate-200 hover:bg-slate-50 hover:text-slate-850 text-slate-600 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                className="px-4 py-2 border border-slate-200 hover:bg-slate-50 hover:text-slate-800 text-slate-600 rounded-xl text-xs font-bold transition-all cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm"
+                className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm"
               >
                 Save Patient Record
               </button>
@@ -205,7 +208,7 @@ const Patients = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider bg-slate-55 text-[9px]">
+              <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider bg-slate-50 text-[9px]">
                 <th className="px-6 py-3.5">ID</th>
                 <th className="px-6 py-3.5">Name / Age / Gender</th>
                 <th className="px-6 py-3.5">Phone Number</th>
@@ -221,7 +224,7 @@ const Patients = () => {
                 </tr>
               ) : (
                 filteredPatients.map((patient) => (
-                  <tr key={patient._id} className="text-slate-600 hover:bg-slate-55 transition-colors">
+                  <tr key={patient._id} className="text-slate-600 hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4 font-mono font-bold text-xs text-slate-700">{patient.patientId}</td>
                     <td className="px-6 py-4">
                       <div>
@@ -291,11 +294,11 @@ const Patients = () => {
 
             <form onSubmit={handleVitalsSave} className="space-y-4">
               <div>
-                <label className="block text-[10px] font-bold text-slate-450 uppercase tracking-wider mb-2">Blood Pressure (mmHg)</label>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Blood Pressure (mmHg)</label>
                 <input
                   type="text"
                   required
-                  className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
+                  className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                   value={vitalsData.bloodPressure}
                   onChange={(e) => setVitalsData({ ...vitalsData, bloodPressure: e.target.value })}
                   placeholder="120/80"
@@ -303,11 +306,11 @@ const Patients = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-450 uppercase tracking-wider mb-2">Heart Rate (bpm)</label>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Heart Rate (bpm)</label>
                 <input
                   type="number"
                   required
-                  className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
+                  className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                   value={vitalsData.heartRate}
                   onChange={(e) => setVitalsData({ ...vitalsData, heartRate: e.target.value })}
                   placeholder="75"
@@ -315,12 +318,12 @@ const Patients = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-455 uppercase tracking-wider mb-2">Body Temperature (&deg;F)</label>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Body Temperature (&deg;F)</label>
                 <input
                   type="number"
                   step="0.1"
                   required
-                  className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
+                  className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                   value={vitalsData.temperature}
                   onChange={(e) => setVitalsData({ ...vitalsData, temperature: e.target.value })}
                   placeholder="98.6"
@@ -328,11 +331,11 @@ const Patients = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-slate-455 uppercase tracking-wider mb-2">Oxygen Level (SpO2 %)</label>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Oxygen Level (SpO2 %)</label>
                 <input
                   type="number"
                   required
-                  className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
+                  className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                   value={vitalsData.oxygenLevel}
                   onChange={(e) => setVitalsData({ ...vitalsData, oxygenLevel: e.target.value })}
                   placeholder="98"
