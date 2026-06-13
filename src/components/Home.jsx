@@ -1,9 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import healthTechImg from '../assets/HealthTech.jpg';
 import image2Img from '../assets/image 2.jpg';
 
+// Screenshots
+import ssOverview from '../assets/ss/Screenshot 2026-06-13 154910.png';
+import ssPatients from '../assets/ss/Screenshot 2026-06-13 155003.png';
+import ssOPDQueue from '../assets/ss/Screenshot 2026-06-13 155049.png';
+import ssBeds from '../assets/ss/Screenshot 2026-06-13 155144.png';
+import ssAdmissions from '../assets/ss/Screenshot 2026-06-13 155229.png';
+import ssInventory from '../assets/ss/Screenshot 2026-06-13 155329.png';
+import ssAlerts from '../assets/ss/Screenshot 2026-06-13 155409.png';
+import ssNotices from '../assets/ss/Screenshot 2026-06-13 155529.png';
+
+const screenshotImages = [
+  ssOverview,
+  ssPatients,
+  ssOPDQueue,
+  ssBeds,
+  ssAdmissions,
+  ssInventory,
+  ssAlerts,
+  ssNotices,
+];
+
 const Home = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + screenshotImages.length) % screenshotImages.length);
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % screenshotImages.length);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleNext();
+    }, 6000);
+    return () => clearTimeout(timer);
+  }, [activeIndex]);
+
   return (
     <div className="min-h-screen bg-white flex flex-col justify-between font-sans relative">
       
@@ -336,167 +374,75 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
-            
-            {/* Screenshot 1: Overview */}
-            <div className="bg-white border border-slate-200/80 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 hover:border-emerald-500/25 overflow-hidden flex flex-col min-h-[280px] group">
-              {/* Browser Header */}
-              <div className="bg-slate-100 border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
-                <div className="flex gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                </div>
-                <div className="bg-white border border-slate-200 rounded px-3 py-0.5 text-[8.5px] text-slate-400 font-mono w-48 truncate text-center">
-                  console.careconnect.com/overview
-                </div>
-                <div className="w-6"></div>
+          <div className="relative max-w-5xl mx-auto w-full group">
+            {/* Carousel Main Container with standard borders/shadow and overflow protection */}
+            <div className="relative overflow-hidden rounded-2xl shadow-sm border border-slate-200 bg-slate-50 aspect-[16/10]">
+              
+              {/* Slider Track (Horizontal sliding transition) */}
+              <div 
+                className="flex h-full transition-transform duration-500 ease-out"
+                style={{ transform: `translate3d(-${activeIndex * 100}%, 0, 0)` }}
+              >
+                {screenshotImages.map((img, idx) => (
+                  <div key={idx} className="w-full h-full shrink-0 flex items-center justify-center aspect-[16/10] bg-slate-50">
+                    <img
+                      src={img}
+                      alt={`CareConnect Operational Console Screenshot ${idx + 1}`}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                ))}
               </div>
               
-              {/* Browser Content */}
-              <div className="p-5 bg-slate-50 flex-1 flex flex-col justify-between font-mono text-[9px]">
-                <div className="flex justify-between items-center border-b border-slate-200/60 pb-2 mb-3">
-                  <span className="font-sans font-extrabold text-slate-800 text-[10px]">Overview Dashboard</span>
-                  <span className="flex items-center gap-1 text-[8px] text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">
-                    <span className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></span>
-                    ONLINE
-                  </span>
-                </div>
+              {/* Left Arrow Option */}
+              <button
+                onClick={handlePrev}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-950/45 hover:bg-emerald-600/95 text-white flex items-center justify-center transition-all backdrop-blur-xs cursor-pointer shadow-sm hover:scale-[1.03] z-10"
+                aria-label="Previous Console Screenshot"
+              >
+                <svg className="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
 
-                <div className="grid grid-cols-2 gap-3 mb-3">
-                  <div className="bg-white p-3 rounded-lg border border-slate-200/50 flex flex-col justify-between">
-                    <span className="text-slate-400 text-[8px]">ACTIVE STAFF</span>
-                    <span className="text-xs font-black text-slate-900 mt-1">48 On Duty</span>
-                  </div>
-                  <div className="bg-white p-3 rounded-lg border border-slate-200/50 flex flex-col justify-between">
-                    <span className="text-slate-400 text-[8px]">BED OCCUPANCY</span>
-                    <div className="flex items-center justify-between mt-1">
-                      <span className="text-xs font-black text-slate-900">84%</span>
-                      <span className="text-[7.5px] text-amber-600 font-bold">LOAD_MID</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white p-3 rounded-lg border border-slate-200/50 flex-1 flex flex-col justify-between">
-                  <span className="text-slate-400 text-[8px] mb-1.5">PATIENT TICK RATE</span>
-                  <div className="flex items-end gap-1.5 h-8 pt-1">
-                    <div className="w-full bg-indigo-500 h-[40%] rounded-sm"></div>
-                    <div className="w-full bg-indigo-500 h-[65%] rounded-sm"></div>
-                    <div className="w-full bg-indigo-500 h-[50%] rounded-sm"></div>
-                    <div className="w-full bg-emerald-500 h-[85%] rounded-sm animate-pulse"></div>
-                    <div className="w-full bg-indigo-500 h-[30%] rounded-sm"></div>
-                  </div>
-                </div>
-              </div>
+              {/* Right Arrow Option */}
+              <button
+                onClick={handleNext}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-slate-950/45 hover:bg-emerald-600/95 text-white flex items-center justify-center transition-all backdrop-blur-xs cursor-pointer shadow-sm hover:scale-[1.03] z-10"
+                aria-label="Next Console Screenshot"
+              >
+                <svg className="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
 
-            {/* Screenshot 2: Admissions */}
-            <div className="bg-white border border-slate-200/80 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 hover:border-emerald-500/25 overflow-hidden flex flex-col min-h-[280px] group">
-              {/* Browser Header */}
-              <div className="bg-slate-100 border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
-                <div className="flex gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                </div>
-                <div className="bg-white border border-slate-200 rounded px-3 py-0.5 text-[8.5px] text-slate-400 font-mono w-48 truncate text-center">
-                  console.careconnect.com/admissions
-                </div>
-                <div className="w-6"></div>
-              </div>
-
-              {/* Browser Content */}
-              <div className="p-5 bg-slate-50 flex-1 flex flex-col justify-between font-mono text-[9px]">
-                <div className="flex justify-between items-center border-b border-slate-200/60 pb-2 mb-3">
-                  <span className="font-sans font-extrabold text-slate-800 text-[10px]">Admissions Log</span>
-                  <span className="text-[7.5px] text-slate-400">4 Active Logs</span>
-                </div>
-
-                <div className="bg-white rounded-lg border border-slate-200/50 overflow-hidden flex-1 flex flex-col justify-between p-2">
-                  <div className="flex justify-between border-b border-slate-100 pb-1.5 text-[7.5px] text-slate-400">
-                    <span>PATIENT</span>
-                    <span>WARD</span>
-                    <span>STATUS</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center py-1 text-slate-700 leading-none">
-                    <span className="font-bold">John Doe</span>
-                    <span className="text-slate-500">ICU-B</span>
-                    <span className="text-[7.5px] text-emerald-600 bg-emerald-50 px-1 py-0.5 rounded font-bold">ADMITTED</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center py-1 text-slate-700 leading-none">
-                    <span className="font-bold">Sarah Smith</span>
-                    <span className="text-slate-500">OPD-3</span>
-                    <span className="text-[7.5px] text-amber-600 bg-amber-50 px-1 py-0.5 rounded font-bold">TRIAGE</span>
-                  </div>
-
-                  <div className="flex justify-between items-center py-1 text-slate-700 leading-none">
-                    <span className="font-bold">David Lee</span>
-                    <span className="text-slate-500">Gen-1</span>
-                    <span className="text-[7.5px] text-slate-600 bg-slate-100 px-1 py-0.5 rounded font-bold">DISCHARGED</span>
-                  </div>
-                </div>
-              </div>
+            {/* Slider Indicators (dots only, numbers removed) */}
+            <div className="flex justify-center items-center gap-1.5 mt-6">
+              {screenshotImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveIndex(idx)}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    activeIndex === idx ? 'w-5 bg-emerald-500' : 'w-1.5 bg-slate-300 hover:bg-slate-450'
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
             </div>
-
-            {/* Screenshot 3: Alert Center */}
-            <div className="bg-white border border-slate-200/80 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 hover:border-emerald-500/25 overflow-hidden flex flex-col min-h-[280px] group">
-              {/* Browser Header */}
-              <div className="bg-slate-100 border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
-                <div className="flex gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                </div>
-                <div className="bg-white border border-slate-200 rounded px-3 py-0.5 text-[8.5px] text-slate-400 font-mono w-48 truncate text-center">
-                  console.careconnect.com/alerts
-                </div>
-                <div className="w-6"></div>
-              </div>
-
-              {/* Browser Content */}
-              <div className="p-5 bg-slate-50 flex-1 flex flex-col justify-between font-mono text-[9px]">
-                <div className="flex justify-between items-center border-b border-slate-200/60 pb-2 mb-3">
-                  <span className="font-sans font-extrabold text-slate-800 text-[10px]">Broadcast Hub</span>
-                  <span className="text-[7.5px] text-red-650 bg-red-50 px-1 rounded font-bold animate-pulse">3 CRITICAL</span>
-                </div>
-
-                <div className="space-y-2 flex-1 flex flex-col justify-center">
-                  <div className="bg-red-50/50 border border-red-100 rounded p-2 flex items-start justify-between">
-                    <div>
-                      <div className="font-black text-red-700 text-[7.5px]">PHARMA OUTAGE ALERT</div>
-                      <div className="text-[7px] text-slate-500 leading-tight mt-0.5">Dispensary Saline low supply.</div>
-                    </div>
-                    <span className="text-[7px] text-red-600 font-bold">1m ago</span>
-                  </div>
-
-                  <div className="bg-amber-50/50 border border-amber-100 rounded p-2 flex items-start justify-between">
-                    <div>
-                      <div className="font-black text-amber-700 text-[7.5px]">ICU CAPACITY EXCEEDED</div>
-                      <div className="text-[7px] text-slate-500 leading-tight mt-0.5">ICU occupancy has crossed 95%.</div>
-                    </div>
-                    <span className="text-[7px] text-amber-600 font-bold">8m ago</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-slate-50 border-t border-slate-100 py-12">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-slate-400 text-[9px] font-bold uppercase tracking-wider">
-          <div className="text-slate-800 font-extrabold text-sm tracking-tight">
+      <footer id="contact" className="bg-slate-50 border-t border-slate-100 py-6">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between text-slate-400 text-[8.5px] font-bold uppercase tracking-wider">
+          <div className="text-slate-850 font-extrabold text-xs tracking-tight">
             CareConnect
           </div>
-          <p className="mt-4 md:mt-0">&copy; {new Date().getFullYear()} CareConnect. All clinical protocols secured.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0 text-slate-400">
-            <span className="hover:text-slate-600 cursor-pointer transition-colors">Security Protocol</span>
-            <span className="hover:text-slate-600 cursor-pointer transition-colors">Regulatory Standards</span>
-            <span className="hover:text-slate-600 cursor-pointer transition-colors">System Support</span>
+          <p className="mt-2.5 md:mt-0">&copy; {new Date().getFullYear()} CareConnect. All rights registered.</p>
+          <div className="flex space-x-6 mt-2.5 md:mt-0 text-slate-400">
+            <Link to="/privacy" className="hover:text-slate-600 transition-colors">Privacy Policy</Link>
           </div>
         </div>
       </footer>

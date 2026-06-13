@@ -17,6 +17,7 @@ import AlertCenter from './components/AlertCenter';
 import Notices from './components/Notices';
 import About from './components/About';
 import InProgress from './components/InProgress';
+import PrivacyPolicy from './components/PrivacyPolicy';
 
 // Protected Route Guard
 const ProtectedRoute = ({ children }) => {
@@ -61,6 +62,10 @@ function App() {
     {
       path: '/About',
       element: <About />
+    },
+    {
+      path: '/privacy',
+      element: <PrivacyPolicy />
     },
     // Authenticated routes wrapped in ProtectedRoute and Layout
     {
