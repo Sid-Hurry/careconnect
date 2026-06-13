@@ -23,28 +23,31 @@ const Notices = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fadeIn">
 
       {/* Top action row */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-        <div className="space-y-1">
-          <h3 className="text-base font-bold text-slate-800">Operational Bulletin</h3>
-          <p className="text-xs text-slate-500 font-medium">Notice announcements board for hospital workflow updates.</p>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-3xl border border-slate-100 shadow-premium">
+        <div className="space-y-0.5">
+          <h3 className="text-xxs font-bold text-slate-450 uppercase tracking-wider">Operational Bulletin</h3>
+          <p className="text-xs font-bold text-slate-800">Notice announcements board for hospital workflow updates.</p>
         </div>
 
         {user.role === 'Management' && (
           <button
             onClick={() => setShowAddForm(!showAddForm)}
-            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold shadow-md transition-all cursor-pointer"
+            className="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-sm shadow-indigo-600/10 transition-all cursor-pointer active:scale-95"
           >
-            <span>Publish Announcement</span>
+            {showAddForm ? 'Cancel Publish' : 'Publish Announcement'}
           </button>
         )}
       </div>
 
       {successMsg && (
-        <div className="bg-emerald-50 text-emerald-600 text-xs px-4 py-3 rounded-xl border border-emerald-100 font-semibold">
-          {successMsg}
+        <div className="bg-emerald-50 text-emerald-800 text-xs px-4 py-3 rounded-2xl border border-emerald-100/40 font-bold animate-scaleUp">
+          <div className="flex items-center space-x-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+            <span>{successMsg}</span>
+          </div>
         </div>
       )}
 
@@ -54,27 +57,27 @@ const Notices = () => {
         {/* Notices Board */}
         <div className="lg:col-span-2 space-y-4">
           {notices.length === 0 ? (
-            <div className="bg-white p-8 text-center rounded-2xl border border-slate-100 text-slate-400 italic">
+            <div className="bg-white p-12 text-center rounded-3xl border border-slate-100 shadow-premium text-slate-400 font-bold italic text-xs">
               No bulletin notices posted yet.
             </div>
           ) : (
             notices.map((notice) => (
-              <div key={notice._id} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all space-y-3">
+              <div key={notice._id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-premium hover:scale-[1.005] hover:shadow-lg transition-all duration-300 space-y-3">
                 <div className="flex justify-between items-start">
-                  <h4 className="text-base font-bold text-slate-800 flex items-center">
+                  <h4 className="text-sm font-black text-slate-800 tracking-tight">
                     {notice.title}
                   </h4>
-                  <span className="text-[10px] text-slate-400 font-medium flex items-center bg-slate-50 border border-slate-150 px-2 py-0.5 rounded-md">
+                  <span className="text-[10px] text-slate-450 font-bold bg-slate-55 border border-slate-100/60 px-2.5 py-0.5 rounded-full whitespace-nowrap ml-2">
                     {new Date(notice.createdAt).toLocaleDateString()}
                   </span>
                 </div>
                 
-                <p className="text-xs text-slate-600 leading-relaxed font-medium whitespace-pre-line">
+                <p className="text-xs text-slate-600 leading-relaxed font-bold whitespace-pre-line">
                   {notice.description}
                 </p>
 
-                <div className="flex items-center text-[10px] text-slate-400 font-semibold pt-2 border-t border-slate-100">
-                  <span>Posted By: <span className="text-slate-500 font-bold">{notice.postedBy?.name || 'Dr. Arthur Pendelton'}</span> ({notice.postedBy?.role || 'Management'})</span>
+                <div className="flex items-center text-[10px] text-slate-400 font-bold pt-3 border-t border-slate-100">
+                  <span>Posted By: <span className="text-slate-700 font-extrabold">{notice.postedBy?.name || 'Dr. Arthur Pendelton'}</span> ({notice.postedBy?.role || 'Management'})</span>
                 </div>
               </div>
             ))
@@ -84,18 +87,18 @@ const Notices = () => {
         {/* Notice creation Form */}
         <div className="space-y-6">
           {showAddForm && user.role === 'Management' && (
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm animate-fadeIn">
-              <h3 className="text-base font-bold text-slate-800 mb-4 flex items-center">
+            <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-premium animate-scaleUp">
+              <h3 className="text-xxs font-bold text-slate-450 uppercase tracking-wider mb-4 pb-2 border-b border-slate-100">
                 New Announcement
               </h3>
 
               <form onSubmit={handlePostNotice} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Notice Title</label>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Notice Title</label>
                   <input
                     type="text"
                     required
-                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                     placeholder="e.g. Critical stock replenishments scheduled"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -103,32 +106,34 @@ const Notices = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Description / Bulletin Details</label>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Description / Bulletin Details</label>
                   <textarea
                     required
                     rows="5"
-                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                     placeholder="Type details of notice bulletin here..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md transition-all cursor-pointer"
-                >
-                  Publish to Notice Board
-                </button>
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow-sm shadow-indigo-600/10 active:scale-95 transition-all cursor-pointer text-center"
+                  >
+                    Publish Announcement
+                  </button>
+                </div>
               </form>
             </div>
           )}
 
-          <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-xs text-slate-500 leading-relaxed font-medium space-y-2">
-            <p className="font-bold text-slate-700 uppercase tracking-wider mb-1">Notice Guidelines:</p>
-            <p>1. Only Management staff are authorized to post announcements.</p>
-            <p>2. Notices are propagated immediately to all nurse/doctor/reception terminal boards.</p>
-            <p>3. Do not include patient sensitive records or private health data on the notice bulletin.</p>
+          <div className="bg-slate-55 border border-slate-100 p-5 rounded-3xl text-xxs text-slate-500 leading-relaxed font-bold space-y-2.5">
+            <p className="font-extrabold text-[11px] text-slate-750 uppercase tracking-wider mb-1">Notice Guidelines:</p>
+            <p>&bull; Only Management staff are authorized to post announcements.</p>
+            <p>&bull; Notices are propagated immediately to all nurse/doctor/reception terminal boards.</p>
+            <p>&bull; Do not include patient sensitive records or private health data on the notice bulletin.</p>
           </div>
         </div>
 
@@ -139,3 +144,4 @@ const Notices = () => {
 };
 
 export default Notices;
+

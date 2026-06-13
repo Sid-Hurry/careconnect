@@ -45,45 +45,73 @@ const Admissions = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fadeIn">
+
+      {/* Header Section */}
+      <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-premium flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="space-y-0.5">
+          <h3 className="text-xxs font-bold text-slate-450 uppercase tracking-wider">Inpatient Admissions</h3>
+          <p className="text-xs font-bold text-slate-800">Manage patient ward intake, auto-bed allocation, and discharge records</p>
+        </div>
+        
+        {/* Create Admission Request button (Reception / Doctor / MGMT) */}
+        {user.role !== 'Nurse' && (
+          <button
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm shadow-indigo-600/10 hover:shadow-indigo-600/20 active:scale-95"
+          >
+            {showAddForm ? 'Cancel Request' : 'New Admission Request'}
+          </button>
+        )}
+      </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="bg-white p-5 rounded-2xl border-l-4 border-l-slate-800 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
-          <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Admitted Patients</p>
-            <h4 className="text-2xl font-extrabold text-slate-900 mt-1.5 tracking-tight">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-premium hover:scale-[1.01] hover:shadow-lg transition-all duration-300">
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Admitted Patients</p>
+          <div className="flex items-baseline space-x-2 mt-1.5">
+            <h4 className="text-2xl font-black text-slate-900 tracking-tight">
               {admissions.filter(a => a.status === 'Admitted').length}
             </h4>
+            <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded-md">Active</span>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border-l-4 border-l-blue-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
-          <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pending Placement</p>
-            <h4 className="text-2xl font-extrabold text-slate-900 mt-1.5 tracking-tight">
+        <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-premium hover:scale-[1.01] hover:shadow-lg transition-all duration-300">
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pending Placement</p>
+          <div className="flex items-baseline space-x-2 mt-1.5">
+            <h4 className="text-2xl font-black text-slate-900 tracking-tight">
               {admissions.filter(a => a.status === 'Pending').length}
             </h4>
+            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+              admissions.filter(a => a.status === 'Pending').length > 0
+                ? 'text-amber-600 bg-amber-50 animate-pulse'
+                : 'text-slate-400 bg-slate-50'
+            }`}>Queue</span>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border-l-4 border-l-emerald-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
-          <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Discharges Today</p>
-            <h4 className="text-2xl font-extrabold text-slate-900 mt-1.5 tracking-tight">
+        <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-premium hover:scale-[1.01] hover:shadow-lg transition-all duration-300">
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Discharges Today</p>
+          <div className="flex items-baseline space-x-2 mt-1.5">
+            <h4 className="text-2xl font-black text-slate-900 tracking-tight">
               {admissions.filter(a => a.status === 'Discharged').length}
             </h4>
+            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-md">Completed</span>
           </div>
         </div>
       </div>
 
       {successMsg && (
-        <div className={`px-4 py-2.5 rounded border font-semibold text-xs ${
-          successMsg.includes('Admitted') 
-            ? 'bg-slate-50 border-slate-200 text-slate-900' 
-            : 'bg-red-50 border-red-200 text-red-700'
+        <div className={`px-4 py-3 rounded-2xl border font-bold text-xs shadow-xxs transition-all duration-300 animate-scaleUp ${
+          successMsg.includes('admitted') || successMsg.includes('immediately')
+            ? 'bg-emerald-50 border-emerald-100 text-emerald-800' 
+            : 'bg-amber-50 border-amber-100 text-amber-800'
         }`}>
-          {successMsg}
+          <div className="flex items-center space-x-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+            <span>{successMsg}</span>
+          </div>
         </div>
       )}
 
@@ -91,74 +119,64 @@ const Admissions = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {/* Admissions list */}
-        <div className="bg-white rounded-lg border border-slate-200/80 overflow-hidden lg:col-span-2">
-          <div className="px-6 py-4 border-b border-slate-150 flex justify-between items-center bg-slate-50/20">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">Admissions Ledger</h3>
-            
-            {/* Create Admission Request button (Reception / Doctor / MGMT) */}
-            {user.role !== 'Nurse' && (
-              <button
-                onClick={() => setShowAddForm(!showAddForm)}
-                className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold transition-all cursor-pointer"
-              >
-                New Admission Request
-              </button>
-            )}
+        <div className="bg-white rounded-3xl border border-slate-100 shadow-premium overflow-hidden lg:col-span-2">
+          <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-white">
+            <h3 className="text-xxs font-bold uppercase tracking-wider text-slate-450">Admissions Ledger</h3>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-slate-150 text-slate-400 font-bold uppercase tracking-wider bg-slate-50/60">
-                  <th className="px-6 py-3.5">Patient</th>
-                  <th className="px-6 py-3.5">Assigned Bed</th>
-                  <th className="px-6 py-3.5">Admission Reason</th>
-                  <th className="px-6 py-3.5">Admit Date</th>
-                  <th className="px-6 py-3.5">Status</th>
-                  <th className="px-6 py-3.5 text-right">Actions</th>
+                <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider bg-slate-55">
+                  <th className="px-6 py-3.5 text-xxs tracking-widest">Patient</th>
+                  <th className="px-6 py-3.5 text-xxs tracking-widest">Assigned Bed</th>
+                  <th className="px-6 py-3.5 text-xxs tracking-widest">Admission Reason</th>
+                  <th className="px-6 py-3.5 text-xxs tracking-widest">Admit Date</th>
+                  <th className="px-6 py-3.5 text-xxs tracking-widest">Status</th>
+                  <th className="px-6 py-3.5 text-xxs tracking-widest text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-50">
                 {admissions.length === 0 ? (
                   <tr>
-                    <td colSpan="6" className="py-8 text-center text-slate-400 italic">No patient admission records found.</td>
+                    <td colSpan="6" className="py-12 text-center text-slate-400 italic font-bold">No patient admission records found.</td>
                   </tr>
                 ) : (
                   admissions.map((entry) => (
-                    <tr key={entry._id} className="text-slate-650 hover:bg-slate-50/50">
-                      <td className="px-6 py-3 font-bold text-slate-800">
+                    <tr key={entry._id} className="text-slate-650 hover:bg-slate-55 transition-colors">
+                      <td className="px-6 py-4 font-bold text-slate-800">
                         <div>
-                          <p>{entry.patient?.name}</p>
-                          <p className="text-[9px] text-slate-400 font-mono font-bold uppercase">{entry.patient?.patientId}</p>
+                          <p className="font-bold text-xs">{entry.patient?.name}</p>
+                          <p className="text-[9px] text-slate-400 font-mono tracking-wider font-bold mt-0.5">{entry.patient?.patientId}</p>
                         </div>
                       </td>
-                      <td className="px-6 py-3 text-xxs font-semibold text-slate-700">
+                      <td className="px-6 py-4">
                         {entry.bed ? (
-                          <span className="bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200">
+                          <span className="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-lg border border-indigo-100/40 text-[10px] font-bold">
                             {entry.bed.bedNumber} ({entry.bed.wardType})
                           </span>
                         ) : (
-                          <span className="text-red-650 font-bold italic">Unallocated</span>
+                          <span className="text-rose-600 bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-100/40 text-[10px] font-bold italic">Unallocated</span>
                         )}
                       </td>
-                      <td className="px-6 py-3 text-xxs max-w-xs truncate">{entry.admissionReason}</td>
-                      <td className="px-6 py-3 text-xxs text-slate-550 font-semibold">
+                      <td className="px-6 py-4 text-xxs font-medium max-w-xs truncate text-slate-600">{entry.admissionReason}</td>
+                      <td className="px-6 py-4 text-xxs text-slate-450 font-bold">
                         {new Date(entry.admissionDate).toLocaleDateString()}
                       </td>
-                      <td className="px-6 py-3">
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
+                      <td className="px-6 py-4">
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                           entry.status === 'Admitted' 
-                            ? 'bg-slate-100 text-slate-800 border-slate-200' 
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-100/40' 
                             : entry.status === 'Pending' 
-                              ? 'bg-slate-50 text-slate-600 border-slate-200' 
-                              : 'bg-slate-100 text-slate-450 border-transparent'
+                              ? 'bg-amber-50 text-amber-700 border-amber-100/40 animate-pulse' 
+                              : 'bg-slate-100 text-slate-500 border-transparent'
                         }`}>{entry.status}</span>
                       </td>
-                      <td className="px-6 py-3 text-right">
+                      <td className="px-6 py-4 text-right">
                         {entry.status === 'Admitted' && (
                           <button
                             onClick={() => handleDischarge(entry._id)}
-                            className="px-2.5 py-1.5 border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg text-xxs font-bold transition-all cursor-pointer"
+                            className="px-3 py-1.5 border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xxs font-bold transition-all cursor-pointer shadow-xxs active:scale-95"
                           >
                             Process Discharge
                           </button>
@@ -172,20 +190,20 @@ const Admissions = () => {
           </div>
         </div>
 
-        {/* Admission Request Form */}
+        {/* Admission Request Form & Info */}
         <div className="space-y-6">
           {showAddForm && (
-            <div className="bg-white p-5 rounded-lg border border-slate-200/80 animate-fadeIn">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 mb-4 flex items-center">
+            <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-premium animate-scaleUp">
+              <h3 className="text-xxs font-bold uppercase tracking-wider text-slate-450 mb-4 pb-2 border-b border-slate-100">
                 Admission Intake Request
               </h3>
 
               <form onSubmit={handleAddAdmission} className="space-y-4">
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Select Patient</label>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Select Patient</label>
                   <select
                     required
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-slate-50/50 text-slate-850 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                     value={patientId}
                     onChange={(e) => setPatientId(e.target.value)}
                   >
@@ -197,10 +215,10 @@ const Admissions = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Requesting Clinician</label>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Requesting Clinician</label>
                   <select
                     required
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-slate-50/50 text-slate-850 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                     value={doctorId}
                     onChange={(e) => setDoctorId(e.target.value)}
                   >
@@ -212,9 +230,9 @@ const Admissions = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Target Ward Type</label>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Target Ward Type</label>
                   <select
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-slate-50/50 text-slate-850 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                     value={wardType}
                     onChange={(e) => setWardType(e.target.value)}
                   >
@@ -225,21 +243,21 @@ const Admissions = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Clinical Indication for Admission</label>
+                  <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Clinical Indication for Admission</label>
                   <textarea
                     required
                     rows="3"
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs bg-slate-50/50 text-slate-800 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-xs bg-slate-55 text-slate-805 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600"
                     placeholder="Describe clinical reason for inpatient placement..."
                     value={admissionReason}
                     onChange={(e) => setAdmissionReason(e.target.value)}
                   ></textarea>
                 </div>
 
-                <div className="flex space-x-2 pt-2">
+                <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-lg text-xs transition-all cursor-pointer"
+                    className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition-all cursor-pointer shadow-sm shadow-indigo-600/10 hover:shadow-indigo-600/25 active:scale-95 text-center"
                   >
                     Auto-Allocate & Admit
                   </button>
@@ -249,13 +267,13 @@ const Admissions = () => {
           )}
 
           {/* Admission guidelines */}
-          <div className="bg-white p-5 rounded-lg border border-slate-200/80 space-y-4">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center">
+          <div className="bg-white p-5 rounded-3xl border border-slate-100 shadow-premium space-y-4">
+            <h3 className="text-xxs font-bold uppercase tracking-wider text-slate-450 flex items-center">
               Admission Placement Logic
             </h3>
-            <div className="space-y-3 text-xxs text-slate-500 leading-relaxed font-semibold">
+            <div className="space-y-3 text-xxs text-slate-500 leading-relaxed font-bold">
               <p>The system features an automated, rule-based bed reservation check during intake requests:</p>
-              <div className="pl-3 space-y-2 text-slate-650 font-bold border-l-2 border-slate-900">
+              <div className="pl-3.5 space-y-2 text-slate-650 font-bold border-l-2 border-indigo-600">
                 <p>&bull; Target ward matching checks available open beds</p>
                 <p>&bull; Direct bed status locking avoids race-conditions</p>
                 <p>&bull; Auto-triggers alert logs on ward saturation (exceeding 90% load)</p>
@@ -271,3 +289,4 @@ const Admissions = () => {
 };
 
 export default Admissions;
+
