@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import './App.css';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { GlobalProvider, useGlobalContext } from './context/Context';
@@ -18,6 +19,7 @@ import Notices from './components/Notices';
 import About from './components/About';
 import InProgress from './components/InProgress';
 import PrivacyPolicy from './components/PrivacyPolicy';
+import Contact from './components/Contact';
 
 // Protected Route Guard
 const ProtectedRoute = ({ children }) => {
@@ -66,6 +68,10 @@ function App() {
     {
       path: '/privacy',
       element: <PrivacyPolicy />
+    },
+    {
+      path: '/contact',
+      element: <Contact />
     },
     // Authenticated routes wrapped in ProtectedRoute and Layout
     {

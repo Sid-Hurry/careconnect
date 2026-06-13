@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useGlobalContext } from '../context/Context';
 import { 
   MdDashboard, MdQueue, MdOutlineBed, MdChecklist, 
-  MdNotificationImportant, MdAnnouncement, MdDomain, 
-  MdSettings, MdOutlineHistory, MdPeople, MdMenu, MdClose, MdExitToApp
+  MdNotificationImportant, MdAnnouncement, MdPeople, MdMenu, MdClose
 } from 'react-icons/md';
-import { FaUserMd, FaPrescriptionBottleAlt, FaExchangeAlt, FaHospitalAlt, FaNetworkWired } from 'react-icons/fa';
+import { FaPrescriptionBottleAlt } from 'react-icons/fa';
 
 const Layout = ({ children }) => {
   const { user, alerts, logout, isOfflineMode } = useGlobalContext();
@@ -86,10 +86,9 @@ const Layout = ({ children }) => {
         <aside className="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200/80 fixed inset-y-0 left-0 z-20">
           {/* Logo */}
           <div className="h-16 flex items-center px-6 border-b border-slate-100">
-            <div className="flex items-center space-x-2.5 text-slate-900 font-bold text-sm">
-              <span className="w-5 h-5 bg-indigo-600 rounded-lg flex items-center justify-center text-[10px] text-white font-extrabold shadow-sm">C</span>
-              <span className="tracking-tight text-slate-800 font-bold">CareConnect</span>
-            </div>
+            <Link to="/" className="text-slate-900 font-extrabold text-lg tracking-tight hover:opacity-90 transition-opacity">
+              CareConnect
+            </Link>
           </div>
 
           {/* Navigation Links */}
@@ -145,10 +144,9 @@ const Layout = ({ children }) => {
           <div className="lg:hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 transition-opacity" onClick={() => setIsMobileOpen(false)}>
             <div className="w-64 bg-white h-full flex flex-col border-r border-slate-100 animate-slideRight" onClick={(e) => e.stopPropagation()}>
               <div className="h-16 flex items-center justify-between px-6 border-b border-slate-100">
-                <div className="flex items-center space-x-2.5 text-slate-900 font-bold text-sm">
-                  <span className="w-5 h-5 bg-indigo-600 rounded-lg flex items-center justify-center text-[10px] text-white font-extrabold shadow-sm">C</span>
-                  <span className="font-bold text-slate-800">CareConnect</span>
-                </div>
+                <Link to="/" onClick={() => setIsMobileOpen(false)} className="text-slate-900 font-extrabold text-lg tracking-tight hover:opacity-90 transition-opacity">
+                  CareConnect
+                </Link>
                 <button onClick={() => setIsMobileOpen(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
                   <MdClose className="text-lg" />
                 </button>

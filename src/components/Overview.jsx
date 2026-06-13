@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
 import { useGlobalContext } from '../context/Context';
 import { 
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar 
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar 
 } from 'recharts';
 import { Link } from 'react-router-dom';
 
 const Overview = () => {
   const { 
-    user, patients, queue, beds, admissions, inventory, alerts, notices, requests,
-    getDoctorsList
+    user, patients, queue, beds, admissions, inventory, alerts, notices, requests
   } = useGlobalContext();
 
   // Common stats computations
@@ -22,8 +20,7 @@ const Overview = () => {
   const lowStockItems = inventory.filter(i => i.quantity <= i.minimumStock).length;
   const activeAlerts = alerts.filter(a => !a.resolved);
   
-  // Doctor lists for selectors
-  const doctorsList = getDoctorsList();
+
 
   // Shared component - Notice Card
   const NoticesPanel = () => (
@@ -74,28 +71,28 @@ const Overview = () => {
         
         {/* Core Operational Widgets */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-slate-800 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
             <div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Patients Waiting</p>
               <h4 className="text-2xl font-extrabold text-slate-900 mt-1 tracking-tight">{waitingPatients}</h4>
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-blue-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
             <div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Admissions</p>
               <h4 className="text-2xl font-extrabold text-slate-900 mt-1 tracking-tight">{activeAdmissions}</h4>
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-emerald-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
             <div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Available Beds</p>
               <h4 className="text-2xl font-extrabold text-slate-900 mt-1 tracking-tight">{availableBeds} <span className="text-xs font-semibold text-slate-400">({occupancyRate}% Full)</span></h4>
             </div>
           </div>
 
-          <div className={`bg-white p-5 rounded-2xl border-l-4 ${lowStockItems > 0 ? 'border-l-red-500' : 'border-l-slate-300'} border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out`}>
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
             <div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Low Stock Items</p>
               <h4 className="text-2xl font-extrabold text-slate-900 mt-1 tracking-tight">{lowStockItems}</h4>
@@ -240,7 +237,7 @@ const Overview = () => {
         
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-slate-800 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Current Consultation</p>
             <div>
               <h4 className="text-2xl font-extrabold text-slate-900 tracking-tight">
@@ -250,7 +247,7 @@ const Overview = () => {
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-amber-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Queue Waiting</p>
             <div>
               <h4 className="text-2xl font-extrabold text-slate-900 tracking-tight">{pendingConsultations.length}</h4>
@@ -258,7 +255,7 @@ const Overview = () => {
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-indigo-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">My Admitted Patients</p>
             <div>
               <h4 className="text-2xl font-extrabold text-slate-900 tracking-tight">{doctorAdmissionsCount}</h4>
@@ -266,7 +263,7 @@ const Overview = () => {
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-red-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Patient Alerts</p>
             <div>
               <h4 className="text-2xl font-extrabold text-red-600 tracking-tight">
@@ -368,7 +365,7 @@ const Overview = () => {
         
         {/* Core Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-slate-800 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Assigned Ward</p>
             <div>
               <h4 className="text-2xl font-extrabold text-slate-900 tracking-tight">{assignedWard}</h4>
@@ -376,7 +373,7 @@ const Overview = () => {
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-blue-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Beds Occupied</p>
             <div>
               <h4 className="text-2xl font-extrabold text-slate-900 tracking-tight">{wardOccupiedCount} <span className="text-sm font-semibold text-slate-400">/ {wardBeds.length}</span></h4>
@@ -384,7 +381,7 @@ const Overview = () => {
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-amber-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">My Pending Requests</p>
             <div>
               <h4 className="text-2xl font-extrabold text-slate-900 tracking-tight">
@@ -394,7 +391,7 @@ const Overview = () => {
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-red-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-28">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Ward Alerts</p>
             <div>
               <h4 className="text-2xl font-extrabold text-red-650 tracking-tight">
@@ -422,8 +419,8 @@ const Overview = () => {
                   key={bed._id}
                   className={`p-3.5 rounded-xl border flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:shadow-sm ${
                     bed.status === 'Occupied' 
-                      ? 'border-l-4 border-l-red-500 border-slate-200 bg-slate-50/30' 
-                      : 'border-l-4 border-l-emerald-500 border-slate-200 bg-slate-50/30'
+                      ? 'border-red-200 bg-red-50/15' 
+                      : 'border-slate-200 bg-white hover:bg-slate-50/50'
                   }`}
                 >
                   <span className="text-xs font-bold text-slate-800">{bed.bedNumber}</span>
@@ -456,28 +453,28 @@ const Overview = () => {
         
         {/* Core Reception Widgets */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-blue-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
             <div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Registrations Today</p>
               <h4 className="text-2xl font-extrabold text-slate-900 mt-1 tracking-tight">{todayRegCount}</h4>
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-amber-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
             <div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Queue Tokens</p>
               <h4 className="text-2xl font-extrabold text-slate-900 mt-1 tracking-tight">{totalActiveTokens}</h4>
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-slate-800 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
             <div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pending Admissions</p>
               <h4 className="text-2xl font-extrabold text-slate-900 mt-1 tracking-tight">{pendingAdmissionsCount}</h4>
             </div>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border-l-4 border-l-emerald-500 border-y border-r border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out">
             <div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Beds Available</p>
               <h4 className="text-2xl font-extrabold text-slate-900 mt-1 tracking-tight">{availableBeds} <span className="text-xs font-semibold text-slate-400">/ {totalBeds}</span></h4>

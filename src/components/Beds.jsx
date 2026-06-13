@@ -145,8 +145,8 @@ const Beds = () => {
                 }}
                 className={`p-4 rounded-2xl border flex flex-col justify-between items-center text-center cursor-pointer min-h-[130px] transition-all hover:scale-[1.02] shadow-xxs hover:shadow-xs group ${
                   isOccupied 
-                    ? 'border-l-2 border-l-red-500 border-slate-100 bg-slate-55' 
-                    : 'border-l-2 border-l-emerald-500 border-slate-100 bg-white hover:bg-slate-55'
+                    ? 'border-red-200 bg-red-50/15' 
+                    : 'border-slate-200 bg-white hover:bg-slate-50/50'
                 }`}
               >
                 <div className="flex justify-between items-center w-full text-[9px] uppercase font-bold tracking-wider opacity-60">

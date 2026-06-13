@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import healthTechImg from '../assets/HealthTech.jpg';
 import image2Img from '../assets/image 2.jpg';
@@ -69,9 +69,9 @@ const Home = () => {
               <a href="#features" className="text-white hover:text-slate-200 text-sm font-bold tracking-wide transition-colors">
                 Features
               </a>
-              <a href="#contact" className="text-white hover:text-slate-200 text-sm font-bold tracking-wide transition-colors">
+              <Link to="/contact" className="text-white hover:text-slate-200 text-sm font-bold tracking-wide transition-colors">
                 Contact
-              </a>
+              </Link>
             </div>
 
             {/* CTA Portal Login - Highly visible white button */}
@@ -442,6 +442,7 @@ const Home = () => {
           </div>
           <p className="mt-2.5 md:mt-0">&copy; {new Date().getFullYear()} CareConnect. All rights registered.</p>
           <div className="flex space-x-6 mt-2.5 md:mt-0 text-slate-400">
+            <Link to="/contact" className="hover:text-slate-600 transition-colors">Contact Us</Link>
             <Link to="/privacy" className="hover:text-slate-600 transition-colors">Privacy Policy</Link>
           </div>
         </div>
