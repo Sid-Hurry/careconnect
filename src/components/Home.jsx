@@ -4,14 +4,15 @@ import healthTechImg from '../assets/HealthTech.jpg';
 import image2Img from '../assets/image 2.jpg';
 
 // Screenshots
-import ssOverview from '../assets/ss/Screenshot 2026-06-13 154910.png';
-import ssPatients from '../assets/ss/Screenshot 2026-06-13 155003.png';
-import ssOPDQueue from '../assets/ss/Screenshot 2026-06-13 155049.png';
-import ssBeds from '../assets/ss/Screenshot 2026-06-13 155144.png';
-import ssAdmissions from '../assets/ss/Screenshot 2026-06-13 155229.png';
-import ssInventory from '../assets/ss/Screenshot 2026-06-13 155329.png';
-import ssAlerts from '../assets/ss/Screenshot 2026-06-13 155409.png';
-import ssNotices from '../assets/ss/Screenshot 2026-06-13 155529.png';
+import ssOverview from '../assets/ss2/Screenshot 2026-06-13 181254.png';
+import ssPatients from '../assets/ss2/Screenshot 2026-06-13 181401.png';
+import ssOPDQueue from '../assets/ss2/Screenshot 2026-06-13 181444.png';
+import ssBeds from '../assets/ss2/Screenshot 2026-06-13 181533.png';
+import ssAdmissions from '../assets/ss2/Screenshot 2026-06-13 181620.png';
+import ssInventory from '../assets/ss2/Screenshot 2026-06-13 181705.png';
+import ssAlerts from '../assets/ss2/Screenshot 2026-06-13 181755.png';
+import ssNotices from '../assets/ss2/Screenshot 2026-06-13 181926.png';
+
 
 const screenshotImages = [
   ssOverview,
