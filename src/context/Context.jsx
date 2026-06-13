@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, useState, useContext, useEffect } from 'react';
 
 const GlobalContext = createContext();
@@ -11,6 +12,19 @@ const mockUsers = [
   { id: 'u5', name: 'David Miller, RN', email: 'nurse2@careconnect.com', role: 'Nurse', department: 'Emergency Care', assignedWard: 'Emergency' },
   { id: 'u6', name: 'Jane Doe', email: 'reception@careconnect.com', role: 'Reception Staff', department: 'OPD Desk' }
 ];
+
+const isDemoUser = (userObj) => {
+  if (!userObj) return false;
+  const demoEmails = [
+    'admin@careconnect.com',
+    'doctor@careconnect.com',
+    'doctor2@careconnect.com',
+    'nurse@careconnect.com',
+    'nurse2@careconnect.com',
+    'reception@careconnect.com'
+  ];
+  return demoEmails.includes(userObj.email.toLowerCase());
+};
 
 const mockPatients = [
   {
@@ -216,26 +230,46 @@ export const GlobalProvider = ({ children }) => {
     };
   };
 
+  const getStorageKey = (key) => {
+    if (key === 'users' || key === 'doctors') {
+      return `cc_mock_${key}`;
+    }
+    const currentUser = user || JSON.parse(localStorage.getItem('user'));
+    if (currentUser && !isDemoUser(currentUser)) {
+      return `cc_mock_real_${currentUser.email}_${key}`;
+    }
+    return `cc_mock_${key}`;
+  };
+
   // Sync state helpers for offline fallback database simulation
   const loadLocalStorageMock = () => {
     const getLocal = (key, initial) => {
-      const val = localStorage.getItem(`cc_mock_${key}`);
+      const val = localStorage.getItem(getStorageKey(key));
       return val ? JSON.parse(val) : initial;
     };
-    setPatients(getLocal('patients', mockPatients));
+    const currentUser = user || JSON.parse(localStorage.getItem('user'));
+    const isDemo = isDemoUser(currentUser);
+
+    setPatients(getLocal('patients', isDemo ? mockPatients : []));
     setDoctors(getLocal('doctors', mockUsers.filter(u => u.role === 'Doctor')));
-    setQueue(getLocal('queue', mockQueue));
-    setBeds(getLocal('beds', mockBeds));
-    setAdmissions(getLocal('admissions', mockAdmissions));
+    setQueue(getLocal('queue', isDemo ? mockQueue : []));
+    
+    const baseBeds = mockBeds;
+    const initialBeds = isDemo 
+      ? baseBeds 
+      : baseBeds.map(b => ({ ...b, status: 'Available', patient: null }));
+    setBeds(getLocal('beds', initialBeds));
+
+    setAdmissions(getLocal('admissions', isDemo ? mockAdmissions : []));
     setInventory(getLocal('inventory', mockInventory));
-    setRequests(getLocal('requests', mockConsumableRequests));
-    setAlerts(getLocal('alerts', mockAlerts));
-    setNotices(getLocal('notices', mockNotices));
+    setRequests(getLocal('requests', isDemo ? mockConsumableRequests : []));
+    setAlerts(getLocal('alerts', isDemo ? mockAlerts : []));
+    setNotices(getLocal('notices', isDemo ? mockNotices : []));
     setNetwork(getLocal('network', mockHospitals));
   };
 
   const saveLocalMockState = (key, data) => {
-    localStorage.setItem(`cc_mock_${key}`, JSON.stringify(data));
+    localStorage.setItem(getStorageKey(key), JSON.stringify(data));
   };
 
   // Fetch all database categories
@@ -244,47 +278,94 @@ export const GlobalProvider = ({ children }) => {
     try {
       const resPatients = await fetch('/api/patients', { headers: getHeaders() });
       if (!resPatients.ok) throw new Error();
-      const dataPatients = await resPatients.json();
-      setPatients(dataPatients);
+      let dataPatients = await resPatients.json();
 
       const resDoctors = await fetch('/api/doctors', { headers: getHeaders() });
       const dataDoctors = await resDoctors.json();
       setDoctors(dataDoctors);
 
       const resQueue = await fetch('/api/queue', { headers: getHeaders() });
-      const dataQueue = await resQueue.json();
-      setQueue(dataQueue);
+      let dataQueue = await resQueue.json();
 
       const resBeds = await fetch('/api/beds', { headers: getHeaders() });
-      const dataBeds = await resBeds.json();
-      setBeds(dataBeds);
+      let dataBeds = await resBeds.json();
 
       const resAdmissions = await fetch('/api/admissions', { headers: getHeaders() });
-      const dataAdmissions = await resAdmissions.json();
-      setAdmissions(dataAdmissions);
+      let dataAdmissions = await resAdmissions.json();
 
       const resInventory = await fetch('/api/inventory', { headers: getHeaders() });
       const dataInventory = await resInventory.json();
       setInventory(dataInventory);
 
       const resRequests = await fetch('/api/requests', { headers: getHeaders() });
-      const dataRequests = await resRequests.json();
-      setRequests(dataRequests);
+      let dataRequests = await resRequests.json();
 
       const resAlerts = await fetch('/api/alerts', { headers: getHeaders() });
-      const dataAlerts = await resAlerts.json();
-      setAlerts(dataAlerts);
+      let dataAlerts = await resAlerts.json();
 
       const resNotices = await fetch('/api/notices', { headers: getHeaders() });
-      const dataNotices = await resNotices.json();
-      setNotices(dataNotices);
+      let dataNotices = await resNotices.json();
 
       const resNetwork = await fetch('/api/network', { headers: getHeaders() });
       const dataNetwork = await resNetwork.json();
       setNetwork(dataNetwork);
 
+      // Perform real user data filtering if not a demo user
+      const currentUser = user || JSON.parse(localStorage.getItem('user'));
+      if (currentUser && !isDemoUser(currentUser)) {
+        const seedPatientIds = ['PT-1001', 'PT-1002', 'PT-1003', 'PT-1004'];
+        dataPatients = dataPatients.filter(p => !seedPatientIds.includes(p.patientId));
+        
+        const seedTokens = ['TKN-101', 'TKN-102'];
+        dataQueue = dataQueue.filter(q => !seedTokens.includes(q.tokenNumber));
+        
+        dataBeds = dataBeds.map(b => {
+          if (b.patient && seedPatientIds.includes(b.patient.patientId)) {
+            return { ...b, status: 'Available', patient: null };
+          }
+          return b;
+        });
+
+        dataAdmissions = dataAdmissions.filter(a => !a.patient || !seedPatientIds.includes(a.patient.patientId));
+
+        const seedEmails = [
+          'nurse@careconnect.com',
+          'nurse2@careconnect.com',
+          'doctor@careconnect.com',
+          'doctor2@careconnect.com',
+          'admin@careconnect.com',
+          'reception@careconnect.com'
+        ];
+        dataRequests = dataRequests.filter(r => {
+          const requesterEmail = r.requestedBy?.email;
+          return !seedEmails.includes(requesterEmail);
+        });
+
+        const seedAlertTitles = [
+          'Insulin Stock Critical',
+          'Surgical Masks (Box) Stock Low',
+          'OPD Queue Congested',
+          'ICU Ward Reaching Critical Occupancy'
+        ];
+        dataAlerts = dataAlerts.filter(a => !seedAlertTitles.some(title => a.title.startsWith(title)));
+
+        const seedNoticeTitles = [
+          'City Integration Drills',
+          'New Emergency Ward Standard Operating Procedures'
+        ];
+        dataNotices = dataNotices.filter(n => !seedNoticeTitles.includes(n.title));
+      }
+
+      setPatients(dataPatients);
+      setQueue(dataQueue);
+      setBeds(dataBeds);
+      setAdmissions(dataAdmissions);
+      setRequests(dataRequests);
+      setAlerts(dataAlerts);
+      setNotices(dataNotices);
+
       setIsOfflineMode(false);
-    } catch (e) {
+    } catch {
       console.warn("Backend API server offline. Falling back to frontend simulated LocalStorage DB.");
       setIsOfflineMode(true);
       loadLocalStorageMock();
@@ -323,7 +404,7 @@ export const GlobalProvider = ({ children }) => {
         const errorData = await res.json();
         return { success: false, message: errorData.message || 'Login failed' };
       }
-    } catch (e) {
+    } catch {
       // Offline fallback login check
       const getLocal = (key, initial) => {
         const val = localStorage.getItem(`cc_mock_${key}`);
@@ -397,6 +478,13 @@ export const GlobalProvider = ({ children }) => {
     localStorage.removeItem('user');
     setToken(null);
     setUser(null);
+    setPatients([]);
+    setQueue([]);
+    setBeds([]);
+    setAdmissions([]);
+    setRequests([]);
+    setAlerts([]);
+    setNotices([]);
   };
 
   // 1. Patient actions
